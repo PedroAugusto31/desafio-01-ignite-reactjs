@@ -15,6 +15,14 @@ const randomNumber = () => Math.ceil(Math.random() * 99999);
 export function TaskList() {
 	const [tasks, setTasks] = useState<Task[]>([]);
 	const [newTaskTitle, setNewTaskTitle] = useState("");
+	const [isShowingInvalidMsg, setIsShowingInvalidMsg] = useState(false);
+
+	function showInvalidNameMessage() {
+		setTimeout(() => {
+			setIsShowingInvalidMsg((showing) => !showing);
+		}, 3000);
+		setIsShowingInvalidMsg((showing) => !showing);
+	}
 
 	function handleCreateNewTask() {
 		// Crie uma nova task com um id random, não permita criar caso o título seja vazio.
@@ -27,6 +35,8 @@ export function TaskList() {
 			};
 			setTasks((actualTasks) => [...actualTasks, newTask]);
 			setNewTaskTitle("");
+		} else {
+			showInvalidNameMessage();
 		}
 	}
 
@@ -56,6 +66,9 @@ export function TaskList() {
 				<h2>Minhas tasks</h2>
 
 				<div className="input-group">
+					{isShowingInvalidMsg && (
+						<p className="invalid-message">nome inválido</p>
+					)}
 					<input
 						type="text"
 						placeholder="Adicionar novo todo"
